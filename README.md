@@ -1,10 +1,27 @@
-# Personal Finance Backend — V1
+# Personal Finance Manager — V1
 
-API مدیریت مالی شخصی | NestJS + SQLite
+Backend: NestJS + SQLite | Frontend: React + Vite (پوشه `frontend/`)
 
 ---
 
-## نصب سریع
+## اسناد و اسکوپ پروژه
+
+| سند | کاربرد |
+|-----|--------|
+| [`docs/PROJECT_SCOPE.md`](docs/PROJECT_SCOPE.md) | **مرجع اسکوپ V1** — موج‌ها، Storyها، وضعیت، DoD |
+| [`docs/main project.md`](docs/main%20project.md) | PRD کامل، Sprintها، User Storyها |
+| [`docs/frontend agent.md`](docs/frontend%20agent.md) | راهنمای پیاده‌سازی Frontend V1 |
+| [`docs/backend agent.md`](docs/backend%20agent.md) | راهنمای پیاده‌سازی Backend V1 |
+| [`docs/API_CONTRACT.md`](docs/API_CONTRACT.md) | قرارداد REST API |
+| [`AGENTS.md`](AGENTS.md) | دستورالعمل برای AI Agent / Developer |
+
+پیشرفت Frontend: [`frontend/README-V1-FRONTEND.md`](frontend/README-V1-FRONTEND.md)
+
+**دمو و ارائه:** [`docs/DEMO.md`](docs/DEMO.md) — سناریو، چک‌لیست، اسکرین‌شات
+
+---
+
+## Backend — نصب سریع
 
 ```bash
 npm install
