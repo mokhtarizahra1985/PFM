@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import {
   currentMonthParam,
+  formatDisplayDate,
   formatMonthLabel,
   monthDateRange,
   parseMonthParam,
   shiftMonth,
 } from '@/utils/date';
+import { toPersianDigits } from '@/utils/jalaali';
 
 describe('date utilities', () => {
   it('parses month param into year and month', () => {
@@ -24,8 +26,12 @@ describe('date utilities', () => {
     expect(shiftMonth('2026-01', -1)).toBe('2025-12');
   });
 
-  it('formats month label', () => {
-    expect(formatMonthLabel('2026-06')).toBe('2026/06');
+  it('formats month label in Jalali', () => {
+    expect(formatMonthLabel('2026-06')).toBe(`خرداد ${toPersianDigits(1405)}`);
+  });
+
+  it('formats display date in Jalali', () => {
+    expect(formatDisplayDate('2026-06-01')).toBe(toPersianDigits('1405/03/12'));
   });
 
   it('returns current month in YYYY-MM format', () => {

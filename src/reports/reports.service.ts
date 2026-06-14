@@ -1,9 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
+import { RecurringService } from '../recurring/recurring.service';
 
 @Injectable()
 export class ReportsService {
-  constructor(private db: DatabaseService) {}
+  constructor(
+    private db: DatabaseService,
+    private recurringService: RecurringService,
+  ) {}
 
   getExpensesReport(userId: string, dateFrom: string, dateTo: string) {
     const byCategory = this.db.all<any>(
@@ -55,6 +59,11 @@ export class ReportsService {
       [userId, dateFrom, dateTo],
     ) as any)?.total ?? 0;
 
+    const { projectedIncome, projectedExpense } =
+      this.recurringService.getProjectedAmountsForRange(userId, dateFrom, dateTo);
+    const totalIncome = income + projectedIncome;
+    const totalExpense = expense + projectedExpense;
+
     const highestExpense = this.db.get<any>(
       `SELECT title, amount FROM transactions
        WHERE user_id = ? AND type = 'EXPENSE' AND deleted_at IS NULL
@@ -101,9 +110,9 @@ export class ReportsService {
     return {
       year,
       month,
-      totalIncome: income,
-      totalExpense: expense,
-      netAmount: income - expense,
+      totalIncome,
+      totalExpense,
+      netAmount: totalIncome - totalExpense,
       highestExpense: highestExpense
         ? { title: highestExpense.title, amount: highestExpense.amount }
         : null,
@@ -119,7 +128,7 @@ export class ReportsService {
         categoryName: e.category_name,
         categoryIcon: e.category_icon,
         total: e.total,
-        percentage: expense > 0 ? Math.round((e.total / expense) * 100) : 0,
+        percentage: totalExpense > 0 ? Math.round((e.total / totalExpense) * 100) : 0,
       })),
       budgets,
     };
@@ -155,7 +164,17 @@ export class ReportsService {
         [userId, from, to, userId],
       );
 
-      return { year: y, month: m, totalIncome: inc, totalExpense: exp, netAmount: inc - exp, byCategory };
+      const { projectedIncome, projectedExpense } =
+        this.recurringService.getProjectedAmountsForRange(userId, from, to);
+
+      return {
+        year: y,
+        month: m,
+        totalIncome: inc + projectedIncome,
+        totalExpense: exp + projectedExpense,
+        netAmount: inc + projectedIncome - (exp + projectedExpense),
+        byCategory,
+      };
     };
 
     let prevYear = year;

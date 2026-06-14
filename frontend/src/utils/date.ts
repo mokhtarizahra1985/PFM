@@ -1,5 +1,17 @@
+import {
+  JALALI_MONTH_NAMES,
+  isoToJalaliInput,
+  isoToJalaliParts,
+  jalaliInputToIso,
+  toPersianDigits,
+} from '@/utils/jalaali';
+
+function localIsoDate(date: Date): string {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+}
+
 export function todayIsoDate(): string {
-  return new Date().toISOString().slice(0, 10);
+  return localIsoDate(new Date());
 }
 
 export function currentMonthParam(): string {
@@ -9,8 +21,10 @@ export function currentMonthParam(): string {
 
 export function formatMonthLabel(month: string): string {
   if (!month) return '';
-  const [year, mon] = month.split('-');
-  return `${year}/${mon}`;
+  const [yearStr, monthStr] = month.split('-');
+  const parts = isoToJalaliParts(`${yearStr}-${monthStr}-01`);
+  if (!parts) return month;
+  return `${JALALI_MONTH_NAMES[parts.jm - 1]} ${toPersianDigits(parts.jy)}`;
 }
 
 export function shiftMonth(month: string, delta: number): string {
@@ -36,6 +50,7 @@ export function parseMonthParam(month: string): { year: number; month: number } 
 
 export function formatDisplayDate(isoDate: string): string {
   if (!isoDate) return '';
-  const [year, month, day] = isoDate.split('-');
-  return `${year}/${month}/${day}`;
+  return isoToJalaliInput(isoDate);
 }
+
+export { jalaliInputToIso, isoToJalaliInput };

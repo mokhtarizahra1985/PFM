@@ -12,6 +12,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { BudgetsModule } from './budgets/budgets.module';
 import { ReportsModule } from './reports/reports.module';
 import { GoalsModule } from './goals/goals.module';
+import { RecurringModule } from './recurring/recurring.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GoalsModule } from './goals/goals.module';
     BudgetsModule,
     ReportsModule,
     GoalsModule,
+    RecurringModule,
   ],
 })
 export class AppModule {}

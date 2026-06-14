@@ -9,6 +9,7 @@ const primaryNav = [
 ];
 
 const secondaryNav = [
+  { to: '/app/recurring', label: 'درآمد/هزینه ثابت', icon: '🔁' },
   { to: '/app/accounts', label: 'حساب‌ها', icon: '💳' },
   { to: '/app/categories', label: 'دسته‌بندی‌ها', icon: '🏷️' },
   { to: '/app/settings', label: 'تنظیمات', icon: '⚙️' },
@@ -145,6 +146,7 @@ export function MobileDrawerNav({
                 item.to === '/app/budgets' ||
                 item.to === '/app/reports' ||
                 item.to === '/app/goals' ||
+                item.to === '/app/recurring' ||
                 item.to === '/app/accounts' ||
                 item.to === '/app/categories' ||
                 item.to === '/app/settings'

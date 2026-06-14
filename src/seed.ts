@@ -220,6 +220,37 @@ async function seed() {
   }
   console.log('✅ Goals & contributions created');
 
+  // ── Recurring transactions ─────────────────────────────────
+  const salaryRecurringId = uuidv4();
+  const rentRecurringId = uuidv4();
+  const loanRecurringId = uuidv4();
+  const loanEnd = new Date();
+  loanEnd.setMonth(loanEnd.getMonth() + 24);
+  const loanEndDate = loanEnd.toISOString().split('T')[0];
+
+  run(`INSERT INTO recurring_transactions (
+    id, user_id, title, amount, type, account_id, category_id,
+    frequency, start_date, end_date, next_run_date, is_active, note, created_at, updated_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+    [salaryRecurringId, userId, 'حقوق ماهانه', 25000000, 'INCOME', acc.meli, catIds['حقوق'],
+     'MONTHLY', daysAgo(60), null, daysAgo(15), 'حقوق ثابت', t, t]);
+
+  run(`INSERT INTO recurring_transactions (
+    id, user_id, title, amount, type, account_id, category_id,
+    frequency, start_date, end_date, next_run_date, is_active, note, created_at, updated_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+    [rentRecurringId, userId, 'اجاره ماهانه', 8000000, 'EXPENSE', acc.meli, catIds['مسکن'],
+     'MONTHLY', daysAgo(90), null, daysAgo(14), null, t, t]);
+
+  run(`INSERT INTO recurring_transactions (
+    id, user_id, title, amount, type, account_id, category_id,
+    frequency, start_date, end_date, next_run_date, is_active, note, created_at, updated_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`,
+    [loanRecurringId, userId, 'قسط وام', 3500000, 'EXPENSE', acc.mellat, catIds['سایر'],
+     'MONTHLY', daysAgo(180), loanEndDate, daysAgo(5), '۲۴ قسط', t, t]);
+
+  console.log('✅ Recurring transactions created');
+
   save();
   console.log('\n✅ Seed completed successfully!');
   console.log('─────────────────────────────');

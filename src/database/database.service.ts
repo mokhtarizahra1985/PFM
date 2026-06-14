@@ -252,6 +252,47 @@ export class DatabaseService implements OnModuleInit {
       );
     `);
 
+    this.addColumnIfNotExists('transactions', 'recurring_transaction_id', 'TEXT');
+    this.exec(`
+      CREATE INDEX IF NOT EXISTS idx_transactions_recurring
+      ON transactions(user_id, recurring_transaction_id, transaction_date);
+    `);
+
+    this.exec(`
+      CREATE TABLE IF NOT EXISTS recurring_transactions (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        title TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        type TEXT NOT NULL,
+        account_id TEXT NOT NULL,
+        category_id TEXT NOT NULL,
+        frequency TEXT NOT NULL,
+        start_date TEXT NOT NULL,
+        end_date TEXT,
+        next_run_date TEXT NOT NULL,
+        is_active INTEGER NOT NULL DEFAULT 1,
+        note TEXT,
+        created_at TEXT NOT NULL,
+        updated_at TEXT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id),
+        FOREIGN KEY (account_id) REFERENCES accounts(id),
+        FOREIGN KEY (category_id) REFERENCES categories(id)
+      );
+    `);
+
+    this.exec(`
+      CREATE INDEX IF NOT EXISTS idx_recurring_user_type
+      ON recurring_transactions(user_id, type, is_active);
+    `);
+
     this.logger.log('Migrations completed successfully');
+  }
+
+  private addColumnIfNotExists(table: string, column: string, definition: string) {
+    const cols = this.all<{ name: string }>(`PRAGMA table_info(${table})`);
+    if (!cols.some((col) => col.name === column)) {
+      this.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+    }
   }
 }

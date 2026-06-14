@@ -23,6 +23,7 @@ import { parseMoneyInput } from '@/utils/money';
 import { todayIsoDate } from '@/utils/date';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { AppToast } from '@/components/shared/AppToast';
+import { FormJalaliDateField } from '@/components/shared/FormJalaliDateField';
 import { MoneyText } from '@/components/shared/MoneyText';
 import type { TransactionType } from '@/types/api.types';
 
@@ -221,12 +222,11 @@ export function NewTransactionPage() {
               register={transferForm.register}
               error={transferForm.formState.errors.amountInput?.message}
             />
-            <FormInput
+            <FormJalaliDateField
               label="تاریخ"
               id="transfer-date"
               name="transferDate"
-              type="date"
-              register={transferForm.register}
+              control={transferForm.control}
               error={transferForm.formState.errors.transferDate?.message}
             />
             <FormInput
@@ -281,12 +281,11 @@ export function NewTransactionPage() {
                 })) ?? []
               }
             />
-            <FormInput
+            <FormJalaliDateField
               label="تاریخ"
               id="transaction-date"
               name="transactionDate"
-              type="date"
-              register={transactionForm.register}
+              control={transactionForm.control}
               error={transactionForm.formState.errors.transactionDate?.message}
             />
             <FormInput

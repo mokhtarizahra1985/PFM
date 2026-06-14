@@ -15,6 +15,7 @@ import { BudgetsPage } from '@/pages/BudgetsPage';
 import { ReportsPage } from '@/pages/ReportsPage';
 import { GoalsPage } from '@/pages/GoalsPage';
 import { GoalDetailPage } from '@/pages/GoalDetailPage';
+import { RecurringPage } from '@/pages/RecurringPage';
 
 export function AppRoutes() {
   return (
@@ -42,6 +43,7 @@ export function AppRoutes() {
           <Route path="reports" element={<ReportsPage />} />
           <Route path="goals" element={<GoalsPage />} />
           <Route path="goals/:id" element={<GoalDetailPage />} />
+          <Route path="recurring" element={<RecurringPage />} />
         </Route>
       </Route>
 

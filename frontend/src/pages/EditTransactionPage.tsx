@@ -19,6 +19,7 @@ import { PageHeader } from '@/components/shared/PageHeader';
 import { LoadingSkeleton } from '@/components/shared/LoadingSkeleton';
 import { ErrorState } from '@/components/shared/ErrorState';
 import { AppToast } from '@/components/shared/AppToast';
+import { FormJalaliDateField } from '@/components/shared/FormJalaliDateField';
 
 export function EditTransactionPage() {
   const { id } = useParams<{ id: string }>();
@@ -133,12 +134,12 @@ export function EditTransactionPage() {
             }
             {...form.register('categoryId')}
           />
-          <Field
+          <FormJalaliDateField
             label="تاریخ"
             id="edit-date"
-            type="date"
+            name="transactionDate"
+            control={form.control}
             error={form.formState.errors.transactionDate?.message}
-            {...form.register('transactionDate')}
           />
           <Field
             label="یادداشت"

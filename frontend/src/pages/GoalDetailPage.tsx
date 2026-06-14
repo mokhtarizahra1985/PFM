@@ -27,6 +27,7 @@ import { formatDisplayDate, todayIsoDate } from '@/utils/date';
 import { getGoalStatusConfig } from '@/utils/goal-status';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { MoneyText } from '@/components/shared/MoneyText';
+import { FormJalaliDateField } from '@/components/shared/FormJalaliDateField';
 import { LoadingSkeleton } from '@/components/shared/LoadingSkeleton';
 import { ErrorState } from '@/components/shared/ErrorState';
 import { AppToast } from '@/components/shared/AppToast';
@@ -455,7 +456,7 @@ export function GoalDetailPage() {
         >
           <DetailFormField label="عنوان" id="edit-title" name="title" register={editForm.register} error={editForm.formState.errors.title?.message} />
           <DetailFormField label={`مبلغ هدف (${unitLabel})`} id="edit-amount" name="targetAmountInput" inputMode="numeric" register={editForm.register} error={editForm.formState.errors.targetAmountInput?.message} />
-          <DetailFormField label="تاریخ هدف" id="edit-date" name="targetDate" type="date" register={editForm.register} error={editForm.formState.errors.targetDate?.message} />
+          <FormJalaliDateField label="تاریخ هدف" id="edit-date" name="targetDate" control={editForm.control} error={editForm.formState.errors.targetDate?.message} />
           <DetailFormField label="یادداشت" id="edit-note" name="note" register={editForm.register} error={editForm.formState.errors.note?.message} />
         </DetailModal>
       ) : null}
@@ -473,7 +474,7 @@ export function GoalDetailPage() {
           }
         >
           <DetailFormField label={`مبلغ (${unitLabel})`} id="contrib-amount" name="amountInput" inputMode="numeric" register={contributionForm.register} error={contributionForm.formState.errors.amountInput?.message} />
-          <DetailFormField label="تاریخ" id="contrib-date" name="contributionDate" type="date" register={contributionForm.register} error={contributionForm.formState.errors.contributionDate?.message} />
+          <FormJalaliDateField label="تاریخ" id="contrib-date" name="contributionDate" control={contributionForm.control} error={contributionForm.formState.errors.contributionDate?.message} />
           <DetailFormField label="یادداشت (اختیاری)" id="contrib-note" name="note" register={contributionForm.register} error={contributionForm.formState.errors.note?.message} />
         </DetailModal>
       ) : null}

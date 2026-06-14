@@ -2,6 +2,8 @@ import type { ActivityListFilters } from '@/utils/transaction-filters';
 import type { ActivityType } from '@/types/api.types';
 import { useActiveAccounts } from '@/hooks/useAccounts';
 import { useCategories } from '@/hooks/useCategories';
+import { JalaliDateInput } from '@/components/shared/JalaliDateInput';
+import { formatDisplayDate } from '@/utils/date';
 
 interface TransactionFiltersPanelProps {
   filters: ActivityListFilters;
@@ -51,8 +53,8 @@ export function TransactionFiltersPanel({
     filters.categoryId
       ? categories?.find((c) => c.id === filters.categoryId)?.name
       : null,
-    filters.dateFrom ? `از ${filters.dateFrom}` : null,
-    filters.dateTo ? `تا ${filters.dateTo}` : null,
+    filters.dateFrom ? `از ${formatDisplayDate(filters.dateFrom)}` : null,
+    filters.dateTo ? `تا ${formatDisplayDate(filters.dateTo)}` : null,
     filters.search ? `جستجو: ${filters.search}` : null,
   ].filter(Boolean);
 
@@ -141,11 +143,10 @@ export function TransactionFiltersPanel({
 
         <label className="block">
           <span className="mb-1 block text-xs font-medium text-slate-600">از تاریخ</span>
-          <input
-            type="date"
+          <JalaliDateInput
             value={filters.dateFrom ?? ''}
-            onChange={(e) =>
-              onChange({ ...filters, dateFrom: e.target.value || undefined, page: 1 })
+            onChange={(isoDate) =>
+              onChange({ ...filters, dateFrom: isoDate || undefined, page: 1 })
             }
             className="field-input px-3 py-2"
           />
@@ -153,11 +154,10 @@ export function TransactionFiltersPanel({
 
         <label className="block">
           <span className="mb-1 block text-xs font-medium text-slate-600">تا تاریخ</span>
-          <input
-            type="date"
+          <JalaliDateInput
             value={filters.dateTo ?? ''}
-            onChange={(e) =>
-              onChange({ ...filters, dateTo: e.target.value || undefined, page: 1 })
+            onChange={(isoDate) =>
+              onChange({ ...filters, dateTo: isoDate || undefined, page: 1 })
             }
             className="field-input px-3 py-2"
           />

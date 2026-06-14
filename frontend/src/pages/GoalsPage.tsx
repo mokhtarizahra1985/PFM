@@ -17,6 +17,7 @@ import {
 import { parseMoneyInput } from '@/utils/money';
 import { PageHeader } from '@/components/shared/PageHeader';
 import { GoalCard } from '@/components/goals/GoalCard';
+import { FormJalaliDateField } from '@/components/shared/FormJalaliDateField';
 import { EmptyState } from '@/components/shared/EmptyState';
 import { ErrorState } from '@/components/shared/ErrorState';
 import { LoadingSkeleton } from '@/components/shared/LoadingSkeleton';
@@ -230,12 +231,11 @@ export function GoalsPage() {
             register={form.register}
             error={form.formState.errors.targetAmountInput?.message}
           />
-          <GoalFormField
+          <FormJalaliDateField
             label="تاریخ هدف (اختیاری)"
             id="goal-target-date"
             name="targetDate"
-            type="date"
-            register={form.register}
+            control={form.control}
             error={form.formState.errors.targetDate?.message}
           />
           <GoalFormField

@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { DatabaseService } from '../database/database.service';
 import { AccountsService } from '../accounts/accounts.service';
+import { RecurringService } from '../recurring/recurring.service';
 
 @Injectable()
 export class DashboardService {
   constructor(
     private db: DatabaseService,
     private accountsService: AccountsService,
+    private recurringService: RecurringService,
   ) {}
 
   getDashboard(userId: string, month: string) {
@@ -38,6 +40,12 @@ export class DashboardService {
        AND transaction_date >= ? AND transaction_date <= ?`,
       [userId, dateFrom, dateTo],
     ) as any)?.total ?? 0;
+
+    const { projectedIncome, projectedExpense } =
+      this.recurringService.getProjectedAmountsForRange(userId, dateFrom, dateTo);
+
+    const totalMonthlyIncome = monthlyIncome + projectedIncome;
+    const totalMonthlyExpense = monthlyExpense + projectedExpense;
 
     // Top expense category
     const topExpenseCategory = this.db.get<any>(
@@ -122,9 +130,13 @@ export class DashboardService {
 
     return {
       totalBalance,
-      monthlyIncome,
-      monthlyExpense,
-      monthlyNet: monthlyIncome - monthlyExpense,
+      monthlyIncome: totalMonthlyIncome,
+      monthlyExpense: totalMonthlyExpense,
+      monthlyNet: totalMonthlyIncome - totalMonthlyExpense,
+      projectedIncome,
+      projectedExpense,
+      recordedIncome: monthlyIncome,
+      recordedExpense: monthlyExpense,
       topExpenseCategory: topExpenseCategory
         ? { id: topExpenseCategory.id, name: topExpenseCategory.name, total: topExpenseCategory.total }
         : null,

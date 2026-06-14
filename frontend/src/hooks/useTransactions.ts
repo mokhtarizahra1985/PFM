@@ -226,6 +226,7 @@ export function invalidateFinancialQueries(queryClient: ReturnType<typeof useQue
   void queryClient.invalidateQueries({ queryKey: ['goal'] });
   void queryClient.invalidateQueries({ queryKey: ['goal-progress'] });
   void queryClient.invalidateQueries({ queryKey: ['goal-contributions'] });
+  void queryClient.invalidateQueries({ queryKey: ['recurring-transactions'] });
 }
 
 export function useTransactionMutations() {

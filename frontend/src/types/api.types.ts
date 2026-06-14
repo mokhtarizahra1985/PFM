@@ -296,3 +296,25 @@ export interface GoalContribution {
   createdAt: string;
   updatedAt: string;
 }
+
+export type RecurringFrequency = 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+
+export interface RecurringTransaction {
+  id: string;
+  title: string;
+  amount: number;
+  type: TransactionType;
+  accountId: string;
+  accountName?: string;
+  categoryId: string;
+  categoryName?: string;
+  categoryIcon?: string;
+  frequency: RecurringFrequency;
+  startDate: string;
+  endDate: string | null;
+  nextRunDate: string;
+  isActive: boolean;
+  note: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
